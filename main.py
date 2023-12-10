@@ -68,12 +68,18 @@ def main():
             title_id = item["id"]
             story = get_story(title_id)
             title = item["title"]
-            with open(os.path.join(args.output, args.format.format(author=author, title=title)), "w") as file:
+            filepath = os.path.join(args.output, args.format.format(author=author, title=title))
+            if not os.path.exists(os.path.dirname(filepath)):
+                pathlib.Path(os.path.dirname(filepath)).mkdir(parents=True, exist_ok=True)
+            with open(filepath, "w") as file:
                 file.writelines(story)
     else:
         logging.debug(f"Downloading {title} by {author}")
         story = get_story(title_id)
-        with open(os.path.join(args.output, args.format.format(author=author, title=title)), "w") as file:
+        filepath = os.path.join(args.output, args.format.format(author=author, title=title))
+        if not os.path.exists(os.path.dirname(filepath)):
+            pathlib.Path(os.path.dirname(filepath)).mkdir(parents=True, exist_ok=True)
+        with open(filepath, "w") as file:
             file.writelines(story)
 
 
